@@ -1,0 +1,24 @@
+{
+  "name": "ecrequest",
+  "version": "1.0.0",
+  "description": "An easy way to request http and https",
+  "main": "ecRequest.js",
+  "scripts": {
+    "test": "bin/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luphia/ecRequest.git"
+  },
+  "keywords": [
+    "request",
+    "http",
+    "https"
+  ],
+  "author": "Luphia Chang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luphia/ecRequest/issues"
+  },
+  "homepage": "https://github.com/Luphia/ecRequest#readme"
+}
