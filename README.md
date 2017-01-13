@@ -3,7 +3,7 @@ An easy way to request http and https
 
 ## Install ##
 ```shell
-npm install errequest
+npm install ecrequest
 ```
 
 ## Use ##
