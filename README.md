@@ -9,20 +9,29 @@ npm install ecrequest
 ## Use ##
 ```node
 const ecrequest = require('ecrequest');
-var url = 'https://www.google.com';
+const opt = {
+  protocol: 'https:',
+  host: 'www.google.com',
+  port: 80,
+  hostname: 'www.google.com',
+  pathname: '/',
+  path: '/' };
 
 ### request ###
-ecrequest.request(url, console.log);
+ecrequest.request(opt).then(console.log);
 
 ### get ###
-ecrequest.get(url, console.log);
+ecrequest.get(opt).then(console.log);
 
 ### post ###
-ecrequest.post(url, console.log);
+opt.data = { post: 'body' };
+ecrequest.post(opt).then(console.log);
 
 ### put ###
-ecrequest.put(url, console.log);
+opt.data = { put: 'body' };
+ecrequest.put(opt).then(console.log);
 
 ### delete ###
-ecrequest.delete(url, console.log);
+opt.headers = { 'content-type': 'application/json' };
+ecrequest.delete(opt).then(console.log);
 ```
