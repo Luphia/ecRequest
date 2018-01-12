@@ -30,7 +30,11 @@ const ecRequest = class {
 				res.on('end', function () {
 					switch(options.datatype) {
 						case 'json':
-							try { rs.data = JSON.parse(rs.data); } catch(e) { return cb(e); }
+							try {
+								rs.data = JSON.parse(rs.data);
+							} catch(e) {
+								rs.data = rs.toString();
+							}
 							break;
 					}
 					if(typeof(cb) === 'function') {
