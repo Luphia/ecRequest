@@ -43,7 +43,12 @@ const ecRequest = class {
 					resolve(rs);
 				})
 			});
-			crawler.on('error', function (e) { cb(e); })
+			crawler.on('error', function (e) {
+				if(typeof(cb) === 'function') {
+					cb(null, rs);
+				}
+				reject(e);
+			})
 			const body = options.post || options.data;
 			if(body) { crawler.write(JSON.stringify(body)); }
 			crawler.end();
