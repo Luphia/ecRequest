@@ -3,8 +3,12 @@ const https = require('https');
 const url = require('url');
 const path = require('path');
 
+const defaultRetry = 3;
+const defaultWaiting = 3000;
+
 const ecRequest = class {
 	static request(options, cb) {
+		let retry = options.retry > -1 ? options.retry : defaultRetry;
 		return new Promise((resolve, reject) => {
 			let operator;
 			if(typeof(options) == 'string') { options = url.parse(options); }
@@ -19,7 +23,7 @@ const ecRequest = class {
 				default:
 					operator = http;
 			}
-			const crawler = operator.request(options, function (res) {
+			const crawler = operator.request(options, (res) => {
 				var rs = {
 					headers: res.headers,
 					data: new Buffer([])
@@ -43,11 +47,19 @@ const ecRequest = class {
 					resolve(rs);
 				})
 			});
-			crawler.on('error', function (e) {
-				if(typeof(cb) === 'function') {
-					cb(null, rs);
+			crawler.on('error', (e) => {
+				// retry
+				if( retry > 0 ) {
+					options.retry = retry - 1;
+					setTimeout(() => {
+						this.request(options, cb).then(resolve, reject);
+					}, defaultWaiting);
+				} else {
+					if(typeof(cb) === 'function') {
+						cb(null, rs);
+					}
+					reject(e);
 				}
-				reject(e);
 			})
 			const body = options.post || options.data;
 			if(body) { crawler.write(JSON.stringify(body)); }
