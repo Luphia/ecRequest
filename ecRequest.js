@@ -61,6 +61,13 @@ const ecRequest = class {
 					reject(e);
 				}
 			})
+
+			crawler.on("timeout", function(chunk) {
+				if (options.timeout > 0) {
+					crawler.end()
+					reject("api request timeout " + options.timeout/1000 + "s. Exiting");
+				}
+			});
 			const body = options.post || options.data;
 			if(body) { crawler.write(JSON.stringify(body)); }
 			crawler.end();
