@@ -15,10 +15,24 @@ const opt = {
   port: 80,
   hostname: 'www.google.com',
   pathname: '/',
-  path: '/' };
+  path: '/',
+  timeout: 1000
+};
 
 ### request ###
 ecrequest.request(opt).then(console.log);
+
+### error handling ###
+async run() => {
+  try {
+    console.log(`START`);
+    await ecrequest.request(opt).then(console.log);
+    console.log(`DONE`);
+  } catch(e) {
+    console.log(`ERROR ${e.message}`);
+  }
+}
+run();
 
 ### get ###
 ecrequest.get(opt).then(console.log);
