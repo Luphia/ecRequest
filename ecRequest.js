@@ -47,7 +47,8 @@ const ecRequest = class {
 					resolve(rs);
 				})
 			});
-			crawler.on('error', (e) => {
+
+			const reCrawl = (e) => {
 				// retry
 				if( retry > 0 ) {
 					options.retry = retry - 1;
@@ -60,13 +61,16 @@ const ecRequest = class {
 					}
 					reject(e);
 				}
+			}
+			crawler.on('error', (e) => {
+				return reCrawl(e);
 			})
 
-			crawler.on("timeout", function(chunk) {
-				if (options.timeout > 0) {
-					crawler.end()
-					reject("api request timeout " + options.timeout/1000 + "s. Exiting");
-				}
+			crawler.on('timeout', function(chunk) {
+				crawler.end();
+				crawler.destroy();
+				const e = new Error(`Request timeout ${options.timeout / 1000}s. Exiting`);
+				return reCrawl(e);
 			});
 			const body = options.post || options.data;
 			if(body) { crawler.write(JSON.stringify(body)); }
